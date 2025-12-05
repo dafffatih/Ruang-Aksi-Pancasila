@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruang Aksi Pancasila - Aliansi Mahasiswa Lampung Peduli</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .hero-bg {
+            /* Mengganti dengan gambar pegunungan umum yang lebih stabil dimuat */
+            background-image: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #dc2626; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #b91c1c; }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="renderPage('home')">
+                    <div class="bg-red-600 text-white w-10 h-10 flex items-center justify-center rounded-full font-bold text-xl">
+                        <i class="fa-solid fa-dove"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-xl text-red-600 leading-none">Ruang Aksi</h1>
+                        <span class="text-xs text-gray-500 font-semibold tracking-wider">PANCASILA</span>
+                    </div>
+                </div>
+
+                <!-- Desktop Menu -->
+                <div class="hidden md:flex space-x-6 font-medium text-sm">
+                    <a href="#" onclick="renderPage('home')" class="hover:text-red-600 transition">Beranda</a>
+                    <a href="#" onclick="renderPage('sila')" class="hover:text-red-600 transition">Nilai Pancasila</a>
+                    <a href="#" onclick="renderPage('program')" class="hover:text-red-600 transition">Program</a>
+                    <a href="#" onclick="renderPage('laporan')" class="hover:text-red-600 transition">Laporan & Transparansi</a>
+                    <a href="#" onclick="renderPage('forum')" class="hover:text-red-600 transition">Forum Ide</a>
+                    <a href="#" onclick="renderPage('about')" class="hover:text-red-600 transition">Tentang Kami</a>
+                </div>
+
+                <!-- CTA Button -->
+                <div class="hidden md:block">
+                    <button onclick="renderPage('kontribusi')" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full text-sm font-semibold transition shadow-lg transform hover:scale-105">
+                        Kontribusi Sekarang
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn" class="md:hidden text-gray-600 focus:outline-none">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t p-4 flex flex-col space-y-3 shadow-lg">
+            <a href="#" onclick="renderPage('home'); toggleMobileMenu()" class="block text-gray-700 font-medium">Beranda</a>
+            <a href="#" onclick="renderPage('sila'); toggleMobileMenu()" class="block text-gray-700 font-medium">Nilai Pancasila</a>
+            <a href="#" onclick="renderPage('program'); toggleMobileMenu()" class="block text-gray-700 font-medium">Program</a>
+            <a href="#" onclick="renderPage('laporan'); toggleMobileMenu()" class="block text-gray-700 font-medium">Laporan</a>
+            <a href="#" onclick="renderPage('forum'); toggleMobileMenu()" class="block text-gray-700 font-medium">Forum</a>
+            <a href="#" onclick="renderPage('about'); toggleMobileMenu()" class="block text-gray-700 font-medium">Tentang Kami</a>
+            <a href="#" onclick="renderPage('kontribusi'); toggleMobileMenu()" class="block text-red-600 font-bold">Kontribusi Sekarang</a>
+        </div>
+    </nav>
+
+    <!-- Main Content Area (Dynamic) -->
+    <main id="app" class="flex-grow fade-in">
+        <!-- Content will be injected here by JS -->
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-10 mt-auto">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="text-xl font-bold mb-4">Ruang Aksi Pancasila</h3>
+                <p class="text-gray-400 text-sm">Platform kolaborasi mahasiswa dan masyarakat untuk mewujudkan nilai-nilai luhur Pancasila dalam tindakan nyata.</p>
+                <div class="mt-4 flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fa-brands fa-twitter"></i></a>
+                </div>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 border-b border-gray-700 pb-2">Navigasi</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><a href="#" onclick="renderPage('home')" class="hover:text-red-500">Beranda</a></li>
+                    <li><a href="#" onclick="renderPage('program')" class="hover:text-red-500">Program Kegiatan</a></li>
+                    <li><a href="#" onclick="renderPage('laporan')" class="hover:text-red-500">Laporan Keuangan</a></li>
+                    <li><a href="#" onclick="renderPage('kontribusi')" class="hover:text-red-500">Jadi Relawan</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 border-b border-gray-700 pb-2">Kontak Kami</h4>
+                <ul class="space-y-2 text-sm text-gray-400">
+                    <li><i class="fa-solid fa-users mr-2"></i> Aliansi Mahasiswa Lampung Peduli</li>
+                    <li><i class="fa-solid fa-envelope mr-2"></i> kontak@aksipancasila.id</li>
+                    <li><i class="fa-solid fa-map-marker-alt mr-2"></i> Bandar Lampung, Indonesia</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold mb-4 border-b border-gray-700 pb-2">Newsletter</h4>
+                <p class="text-xs text-gray-400 mb-2">Dapatkan info kegiatan terbaru.</p>
+                <div class="flex">
+                    <input type="email" placeholder="Email Anda" class="w-full px-3 py-2 text-gray-900 rounded-l focus:outline-none">
+                    <button class="bg-red-600 px-4 py-2 rounded-r hover:bg-red-700 transition"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-10 text-gray-600 text-xs border-t border-gray-800 pt-4">
+            &copy; 2025 Ruang Aksi Pancasila. Dibuat untuk Indonesia.
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- DATA DUMMY ---
+
+        const mockPrograms = [
+            { id: 1, title: "Jumat Berkah & Toleransi", category: "Sila 1 & 2", date: "12 Juni 2025", image: "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=500&q=60", desc: "Pembagian makanan gratis dan dialog lintas agama di pusat kota." },
+            { id: 2, title: "Gotong Royong Desa Bersih", category: "Sila 3", date: "20 Juni 2025", image: "https://images.unsplash.com/photo-1582213782179-e0d53f98f2ca?auto=format&fit=crop&w=500&q=60", desc: "Membersihkan saluran air dan perbaikan fasilitas umum bersama warga desa." },
+            { id: 3, title: "Kelas Mengajar Anak Jalanan", category: "Sila 5", date: "Setiap Sabtu", image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=500&q=60", desc: "Memberikan akses pendidikan dasar gratis untuk anak-anak kurang mampu." },
+            { id: 4, title: "Forum Musyawarah Warga", category: "Sila 4", date: "25 Juni 2025", image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=500&q=60", desc: "Diskusi terbuka mengenai alokasi dana desa dan prioritas pembangunan." }
+        ];
+
+        const mockIdeas = [
+            { user: "Budi Santoso", role: "Mahasiswa", idea: "Bagaimana kalau kita buat pelatihan digital marketing untuk UMKM lokal agar sesuai Sila ke-5 (Keadilan Sosial)?", votes: 45 },
+            { user: "Siti Aminah", role: "Warga", idea: "Perlu adanya posko kesehatan gratis keliling di daerah pinggiran kota.", votes: 32 },
+            { user: "Reza Pratama", role: "Relawan", idea: "Mengadakan festival budaya pemuda untuk mempererat Persatuan Indonesia.", votes: 28 }
+        ];
+
+        const silas = [
+            { id: 1, icon: "fa-star", title: "Ketuhanan Yang Maha Esa", desc: "Menjunjung tinggi toleransi, kebebasan beragama, dan etika moral spiritual.", color: "bg-yellow-500" },
+            { id: 2, icon: "fa-link", title: "Kemanusiaan yang Adil dan Beradab", desc: "Mengakui persamaan derajat, hak, dan kewajiban antar sesama manusia.", color: "bg-gray-700" },
+            { id: 3, icon: "fa-tree", title: "Persatuan Indonesia", desc: "Menempatkan persatuan, kesatuan, serta kepentingan bangsa di atas kepentingan pribadi.", color: "bg-green-600" },
+            { id: 4, icon: "fa-users", title: "Kerakyatan yang Dipimpin oleh Hikmat...", desc: "Mengutamakan musyawarah untuk mufakat dan semangat kekeluargaan.", color: "bg-red-600" },
+            { id: 5, icon: "fa-scale-balanced", title: "Keadilan Sosial bagi Seluruh Rakyat...", desc: "Mengembangkan perbuatan luhur, gotong royong, dan keadilan ekonomi.", color: "bg-blue-600" }
+        ];
+
+        // --- CORE FUNCTIONS ---
+
+        const app = document.getElementById('app');
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', toggleMobileMenu);
+
+        // Router Sederhana
+        function renderPage(pageName) {
+            window.scrollTo(0, 0);
+            app.innerHTML = ''; // Clear content
+            app.classList.remove('fade-in');
+            void app.offsetWidth; // Trigger reflow
+            app.classList.add('fade-in');
+
+            switch(pageName) {
+                case 'home': renderHome(); break;
+                case 'sila': renderPancasila(); break;
+                case 'program': renderProgram(); break;
+                case 'laporan': renderLaporan(); break;
+                case 'forum': renderForum(); break;
+                case 'about': renderAbout(); break;
+                case 'kontribusi': renderKontribusi(); break;
+                default: renderHome();
+            }
+        }
+
+        // --- PAGE RENDERING FUNCTIONS ---
+
+        function renderHome() {
+            app.innerHTML = `
+                <!-- Hero Section -->
+                <section class="hero-bg text-white py-24 md:py-32 text-center px-4 relative">
+                    <div class="relative z-10 max-w-3xl mx-auto">
+                        <h1 class="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">Aksi Nyata Pancasila</h1>
+                        <p class="text-lg md:text-xl mb-8 font-light drop-shadow-md">Mari berkolaborasi menanamkan nilai luhur bangsa melalui tindakan kemanusiaan, gotong royong, dan edukasi digital.</p>
+                        <div class="flex flex-col md:flex-row justify-center gap-4">
+                            <button onclick="renderPage('program')" class="bg-red-600 hover:bg-red-700 text-white px-8 py-3 rounded-full font-bold transition shadow-lg">Lihat Kegiatan</button>
+                            <button onclick="renderPage('kontribusi')" class="bg-white hover:bg-gray-100 text-red-600 px-8 py-3 rounded-full font-bold transition shadow-lg">Ikut Berkontribusi</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Misi Singkat -->
+                <section class="py-16 bg-white">
+                    <div class="container mx-auto px-4 text-center">
+                        <h2 class="text-3xl font-bold text-gray-800 mb-12">Misi Utama Kami</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="p-6 bg-gray-50 rounded-xl hover:shadow-xl transition border border-gray-100">
+                                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                                <h3 class="text-xl font-bold mb-2">Kemanusiaan</h3>
+                                <p class="text-gray-600">Menjadi wadah penyaluran bantuan sosial dan kerelawanan yang transparan.</p>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-xl hover:shadow-xl transition border border-gray-100">
+                                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4"><i class="fa-solid fa-graduation-cap"></i></div>
+                                <h3 class="text-xl font-bold mb-2">Edukasi Pancasila</h3>
+                                <p class="text-gray-600">Menyajikan konten edukatif modern agar nilai Pancasila relevan di era digital.</p>
+                            </div>
+                            <div class="p-6 bg-gray-50 rounded-xl hover:shadow-xl transition border border-gray-100">
+                                <div class="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-2xl mx-auto mb-4"><i class="fa-solid fa-people-carry-box"></i></div>
+                                <h3 class="text-xl font-bold mb-2">Kolaborasi</h3>
+                                <p class="text-gray-600">Menghubungkan mahasiswa, komunitas, dan pemerintah dalam satu ekosistem.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Highlight Kegiatan -->
+                <section class="py-16 bg-gray-50">
+                    <div class="container mx-auto px-4">
+                        <div class="flex justify-between items-end mb-8">
+                            <div>
+                                <h2 class="text-3xl font-bold text-gray-800">Kegiatan Terbaru</h2>
+                                <p class="text-gray-500 mt-2">Aksi nyata yang sedang dan akan berjalan.</p>
+                            </div>
+                            <a href="#" onclick="renderPage('program')" class="text-red-600 font-semibold hover:underline hidden md:block">Lihat Semua <i class="fa-solid fa-arrow-right ml-1"></i></a>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                            ${mockPrograms.map(prog => `
+                                <div class="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition group">
+                                    <div class="h-48 overflow-hidden">
+                                        <img src="${prog.image}" alt="${prog.title}" class="w-full h-full object-cover transform group-hover:scale-110 transition duration-500">
+                                    </div>
+                                    <div class="p-5">
+                                        <span class="text-xs font-bold text-red-600 bg-red-50 px-2 py-1 rounded mb-2 inline-block">${prog.category}</span>
+                                        <h3 class="font-bold text-lg mb-2 text-gray-800">${prog.title}</h3>
+                                        <p class="text-sm text-gray-500 mb-4"><i class="fa-regular fa-calendar mr-2"></i>${prog.date}</p>
+                                        <button onclick="renderPage('kontribusi')" class="w-full border border-red-600 text-red-600 py-2 rounded hover:bg-red-600 hover:text-white transition text-sm font-semibold">Daftar Relawan</button>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="mt-8 text-center md:hidden">
+                            <a href="#" onclick="renderPage('program')" class="text-red-600 font-semibold hover:underline">Lihat Semua Kegiatan</a>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderPancasila() {
+            app.innerHTML = `
+                <section class="py-16 bg-white min-h-screen">
+                    <div class="container mx-auto px-4">
+                        <div class="text-center max-w-2xl mx-auto mb-16">
+                            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">5 Pilar Dasar Negara</h2>
+                            <p class="text-gray-600">Implementasi nilai-nilai luhur dalam setiap aspek kehidupan bermasyarakat.</p>
+                        </div>
+
+                        <div class="space-y-8">
+                            ${silas.map((sila, index) => `
+                                <div class="flex flex-col md:flex-row items-center bg-white border border-gray-100 rounded-2xl shadow-sm hover:shadow-lg transition p-6 md:p-10 gap-6 md:gap-10">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-24 h-24 ${sila.color} text-white rounded-full flex items-center justify-center text-4xl shadow-lg">
+                                            <i class="fa-solid ${sila.icon}"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow text-center md:text-left">
+                                        <h3 class="text-2xl font-bold text-gray-800 mb-2">Sila ke-${sila.id}: ${sila.title}</h3>
+                                        <p class="text-gray-600 text-lg mb-4">${sila.desc}</p>
+                                        <div class="bg-gray-50 p-4 rounded-lg text-sm text-gray-500 border-l-4 ${sila.color.replace('bg-', 'border-')}">
+                                            <strong>Contoh Aksi Nyata:</strong> 
+                                            ${index === 0 ? "Menghormati perayaan hari besar agama lain, menjaga kebersihan tempat ibadah." : 
+                                              index === 1 ? "Membantu korban bencana alam, tidak melakukan bullying." :
+                                              index === 2 ? "Menggunakan produk lokal, menjaga kerukunan antar suku." :
+                                              index === 3 ? "Aktif dalam pemilihan RT/RW, tidak memaksakan kehendak saat diskusi." :
+                                              "Membayar pajak tepat waktu, memberikan bantuan usaha kepada yang membutuhkan."}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderProgram() {
+            app.innerHTML = `
+                <section class="py-12 bg-gray-50 min-h-screen">
+                    <div class="container mx-auto px-4">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl font-bold text-gray-800">Jadwal Program & Kegiatan</h2>
+                            <p class="text-gray-600 mt-2">Bergabunglah dalam kegiatan positif di sekitar Anda.</p>
+                        </div>
+
+                        <!-- Filter Mockup -->
+                        <div class="flex flex-wrap justify-center gap-2 mb-10">
+                            <button class="px-4 py-2 bg-red-600 text-white rounded-full text-sm font-medium shadow-md">Semua</button>
+                            <button class="px-4 py-2 bg-white text-gray-600 hover:bg-gray-100 rounded-full text-sm font-medium shadow-sm">Sosial</button>
+                            <button class="px-4 py-2 bg-white text-gray-600 hover:bg-gray-100 rounded-full text-sm font-medium shadow-sm">Edukasi</button>
+                            <button class="px-4 py-2 bg-white text-gray-600 hover:bg-gray-100 rounded-full text-sm font-medium shadow-sm">Lingkungan</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            ${mockPrograms.map(prog => `
+                                <div class="bg-white rounded-xl overflow-hidden shadow-lg border border-gray-100 flex flex-col h-full">
+                                    <img src="${prog.image}" alt="${prog.title}" class="h-48 w-full object-cover">
+                                    <div class="p-6 flex-grow flex flex-col">
+                                        <div class="flex justify-between items-start mb-4">
+                                            <span class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-0.5 rounded">${prog.category}</span>
+                                        </div>
+                                        <h3 class="text-xl font-bold text-gray-900 mb-2">${prog.title}</h3>
+                                        <p class="text-gray-600 mb-4 flex-grow text-sm">${prog.desc}</p>
+                                        
+                                        <div class="border-t pt-4 mt-auto">
+                                            <div class="flex items-center text-gray-500 text-sm mb-4">
+                                                <i class="fa-regular fa-clock mr-2"></i> ${prog.date}
+                                            </div>
+                                            <div class="flex gap-2">
+                                                <button onclick="renderPage('kontribusi')" class="flex-1 bg-red-600 text-white py-2 rounded-lg text-sm font-bold hover:bg-red-700 transition">Daftar Relawan</button>
+                                                <button onclick="alert('Fitur donasi akan segera hadir!')" class="flex-1 border border-gray-300 text-gray-700 py-2 rounded-lg text-sm font-bold hover:bg-gray-50 transition">Donasi</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderLaporan() {
+            const totalDana = 18799600;
+            const pengeluaran = [
+                { item: "Bantuan Sembako & Makanan", amount: 8500000, color: "bg-blue-500" },
+                { item: "Peralatan Pendidikan", amount: 4200000, color: "bg-green-500" },
+                { item: "Operasional & Logistik", amount: 2100000, color: "bg-yellow-500" },
+                { item: "Saldo Kas", amount: 3999600, color: "bg-gray-400" }
+            ];
+
+            app.innerHTML = `
+                <section class="py-12 bg-white min-h-screen">
+                    <div class="container mx-auto px-4 max-w-4xl">
+                        <div class="text-center mb-12">
+                            <h2 class="text-3xl font-bold text-gray-800">Transparansi Dana & Laporan</h2>
+                            <p class="text-gray-600 mt-2">Kami menjunjung tinggi kejujuran dalam pengelolaan dana publik.</p>
+                        </div>
+
+                        <!-- Card Total -->
+                        <div class="bg-gradient-to-r from-red-600 to-red-800 text-white rounded-2xl p-8 shadow-xl text-center mb-12">
+                            <h3 class="text-xl font-medium mb-2 opacity-90">Total Dana Terkumpul</h3>
+                            <div class="text-4xl md:text-5xl font-bold tracking-tight">Rp ${totalDana.toLocaleString('id-ID')}</div>
+                            <p class="mt-4 text-sm opacity-80">Update terakhir: 5 Juni 2025 | Pukul 14:00 WIB</p>
+                        </div>
+
+                        <!-- Grafik Batang Sederhana -->
+                        <div class="bg-white border rounded-xl p-6 shadow-sm mb-12">
+                            <h3 class="text-xl font-bold mb-6">Alokasi Penggunaan Dana</h3>
+                            <div class="space-y-6">
+                                ${pengeluaran.map(p => {
+                                    const percent = (p.amount / totalDana * 100).toFixed(1);
+                                    return `
+                                    <div>
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-sm font-medium text-gray-700">${p.item}</span>
+                                            <span class="text-sm font-medium text-gray-700">Rp ${p.amount.toLocaleString('id-ID')} (${percent}%)</span>
+                                        </div>
+                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
+                                            <div class="${p.color} h-2.5 rounded-full" style="width: ${percent}%"></div>
+                                        </div>
+                                    </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Dokumentasi Grid -->
+                        <h3 class="text-xl font-bold mb-6">Dokumentasi & Bukti</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1469571486292-0ba58a3f068b?auto=format&fit=crop&w=300&q=60" class="w-full h-full object-cover">
+                            </div>
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1599059813005-11265ba4b4ce?auto=format&fit=crop&w=300&q=60" class="w-full h-full object-cover">
+                            </div>
+                            <div class="aspect-square bg-gray-200 rounded-lg overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=300&q=60" class="w-full h-full object-cover">
+                            </div>
+                            <div class="aspect-square bg-gray-100 rounded-lg flex items-center justify-center text-gray-400 cursor-pointer hover:bg-gray-200">
+                                <span class="text-sm font-semibold">+ Lihat Semua</span>
+                            </div>
+                        </div>
+
+                        <!-- Tabel Relawan (Sample) -->
+                        <div class="mt-12">
+                            <h3 class="text-xl font-bold mb-4">Relawan Bulan Ini</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-sm text-left text-gray-500">
+                                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3">Nama</th>
+                                            <th class="px-6 py-3">Peran</th>
+                                            <th class="px-6 py-3">Kegiatan</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="bg-white border-b">
+                                            <td class="px-6 py-4 font-medium text-gray-900">Ahmad Fauzi</td>
+                                            <td class="px-6 py-4">Koordinator Lapangan</td>
+                                            <td class="px-6 py-4">Jumat Berkah</td>
+                                        </tr>
+                                        <tr class="bg-white border-b">
+                                            <td class="px-6 py-4 font-medium text-gray-900">Sarah M.</td>
+                                            <td class="px-6 py-4">Dokumentasi</td>
+                                            <td class="px-6 py-4">Gotong Royong</td>
+                                        </tr>
+                                        <tr class="bg-white">
+                                            <td class="px-6 py-4 font-medium text-gray-900">Komunitas Sepeda Lampung</td>
+                                            <td class="px-6 py-4">Mitra Komunitas</td>
+                                            <td class="px-6 py-4">Edukasi Lingkungan</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderForum() {
+            app.innerHTML = `
+                <section class="py-12 bg-gray-50 min-h-screen">
+                    <div class="container mx-auto px-4 max-w-4xl">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl font-bold text-gray-800">Forum Ide Masyarakat</h2>
+                            <p class="text-gray-600 mt-2">Implementasi Sila ke-4: Bermusyawarah untuk solusi bersama.</p>
+                        </div>
+
+                        <!-- Input Ide -->
+                        <div class="bg-white rounded-xl p-6 shadow-md mb-10 border border-gray-200">
+                            <h3 class="text-lg font-bold mb-4">Punya ide kegiatan sosial? Sampaikan di sini!</h3>
+                            <form onsubmit="handleIdeaSubmit(event)">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                    <input type="text" id="ideaName" placeholder="Nama Anda" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500" required>
+                                    <select id="ideaRole" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                                        <option value="Mahasiswa">Mahasiswa</option>
+                                        <option value="Masyarakat Umum">Masyarakat Umum</option>
+                                        <option value="Relawan">Relawan</option>
+                                    </select>
+                                </div>
+                                <textarea id="ideaContent" rows="3" placeholder="Tuliskan ide atau permasalahan sosial di daerahmu..." class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 mb-4" required></textarea>
+                                <button type="submit" class="bg-red-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-red-700 transition">Kirim Ide</button>
+                            </form>
+                        </div>
+
+                        <!-- List Ide -->
+                        <div id="ideasList" class="space-y-4">
+                            <!-- Ide akan dirender di sini oleh JS -->
+                        </div>
+                    </div>
+                </section>
+            `;
+            renderIdeasList();
+        }
+
+        function renderIdeasList() {
+            const container = document.getElementById('ideasList');
+            if(!container) return;
+
+            container.innerHTML = mockIdeas.map((item, index) => `
+                <div class="bg-white p-5 rounded-lg shadow-sm border border-gray-100 flex gap-4">
+                    <div class="flex-shrink-0 flex flex-col items-center justify-center w-12 pt-1">
+                        <button onclick="voteIdea(${index})" class="text-gray-400 hover:text-red-600 transition"><i class="fa-solid fa-chevron-up text-xl"></i></button>
+                        <span class="font-bold text-gray-800 text-sm my-1">${item.votes}</span>
+                        <span class="text-xs text-gray-400">Vote</span>
+                    </div>
+                    <div>
+                        <p class="text-gray-800 text-lg mb-2 leading-relaxed">"${item.idea}"</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <span class="font-bold text-gray-700 mr-2">${item.user}</span>
+                            <span class="bg-gray-100 px-2 py-0.5 rounded text-xs">${item.role}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function handleIdeaSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('ideaName').value;
+            const role = document.getElementById('ideaRole').value;
+            const content = document.getElementById('ideaContent').value;
+
+            // Tambahkan ke array (unshift untuk paling atas)
+            mockIdeas.unshift({ user: name, role: role, idea: content, votes: 0 });
+            
+            // Reset form
+            e.target.reset();
+            
+            // Re-render list
+            renderIdeasList();
+            
+            // Feedback simpel
+            alert("Ide berhasil dikirim! Terima kasih atas kontribusinya.");
+        }
+
+        function voteIdea(index) {
+            mockIdeas[index].votes += 1;
+            renderIdeasList();
+        }
+
+        function renderKontribusi() {
+            app.innerHTML = `
+                <section class="py-12 bg-white min-h-screen">
+                    <div class="container mx-auto px-4 max-w-3xl">
+                        <div class="text-center mb-10">
+                            <h2 class="text-3xl font-bold text-gray-800">Ayo Berkontribusi</h2>
+                            <p class="text-gray-600 mt-2">Pilih cara kamu untuk ikut serta dalam gerakan ini.</p>
+                        </div>
+
+                        <div class="bg-white border rounded-2xl shadow-lg overflow-hidden">
+                            <div class="flex border-b">
+                                <button onclick="document.getElementById('form-vol').classList.remove('hidden'); document.getElementById('form-don').classList.add('hidden');" class="flex-1 py-4 font-bold text-red-600 border-b-2 border-red-600 bg-red-50">Jadi Relawan</button>
+                                <button onclick="document.getElementById('form-don').classList.remove('hidden'); document.getElementById('form-vol').classList.add('hidden');" class="flex-1 py-4 font-bold text-gray-500 hover:bg-gray-50">Donasi Barang</button>
+                            </div>
+
+                            <div class="p-8">
+                                <!-- Form Relawan -->
+                                <form id="form-vol" onsubmit="event.preventDefault(); alert('Terima kasih! Tim kami akan menghubungi Anda via WhatsApp.');">
+                                    <h3 class="text-xl font-bold mb-4 text-gray-800">Pendaftaran Relawan</h3>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Nomor WhatsApp</label>
+                                            <input type="tel" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Minat Kegiatan</label>
+                                            <select class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none">
+                                                <option>Sosial & Kemanusiaan</option>
+                                                <option>Pendidikan & Mengajar</option>
+                                                <option>Dokumentasi & Media</option>
+                                                <option>Logistik & Umum</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="w-full bg-red-600 text-white font-bold py-3 rounded-lg hover:bg-red-700 transition">Kirim Pendaftaran</button>
+                                    </div>
+                                </form>
+
+                                <!-- Form Donasi (Hidden by default) -->
+                                <form id="form-don" class="hidden" onsubmit="event.preventDefault(); alert('Terima kasih! Admin akan mengkonfirmasi detail pengiriman.');">
+                                    <h3 class="text-xl font-bold mb-4 text-gray-800">Donasi Barang/Logistik</h3>
+                                    <div class="bg-yellow-50 text-yellow-800 p-3 rounded mb-4 text-sm">
+                                        Kami menerima sumbangan berupa pakaian layak pakai, buku, sembako, dan alat tulis.
+                                    </div>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Nama Donatur</label>
+                                            <input type="text" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Barang</label>
+                                            <input type="text" placeholder="Contoh: 1 Kardus Buku Tulis" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none" required>
+                                        </div>
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-1">Alamat Penjemputan (Jika ada)</label>
+                                            <textarea rows="2" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none"></textarea>
+                                        </div>
+                                        <button type="submit" class="w-full bg-gray-800 text-white font-bold py-3 rounded-lg hover:bg-gray-900 transition">Konfirmasi Donasi</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderAbout() {
+            app.innerHTML = `
+                <section class="py-16 bg-white min-h-screen">
+                    <div class="container mx-auto px-4 max-w-4xl">
+                        <!-- Profile Header -->
+                        <div class="text-center mb-12">
+                            <div class="inline-block p-4 bg-red-50 rounded-full mb-4">
+                                <i class="fa-solid fa-users-line text-4xl text-red-600"></i>
+                            </div>
+                            <h2 class="text-3xl font-bold text-gray-900">Aliansi Mahasiswa Lampung Peduli</h2>
+                            <p class="text-lg text-gray-600 mt-2">Bergerak Bersama, Membangun Bangsa dari Daerah.</p>
+                        </div>
+
+                        <!-- Sejarah & Visi -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                                <h3 class="text-xl font-bold mb-3 text-red-600">Sejarah Singkat</h3>
+                                <p class="text-gray-700 leading-relaxed">
+                                    Dibentuk pada tahun 2023 oleh sekumpulan mahasiswa dari berbagai kampus di Lampung yang resah akan kurangnya wadah kolaborasi sosial yang terintegrasi. Kami hadir untuk membumikan nilai Pancasila lewat aksi nyata, bukan sekadar teori.
+                                </p>
+                            </div>
+                            <div class="bg-gray-50 p-6 rounded-xl border border-gray-100">
+                                <h3 class="text-xl font-bold mb-3 text-red-600">Visi & Misi</h3>
+                                <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                    <li>Mewujudkan masyarakat yang inklusif dan toleran.</li>
+                                    <li>Meningkatkan kepedulian sosial generasi muda.</li>
+                                    <li>Membangun ekosistem relawan digital yang transparan.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Struktur (Simple) -->
+                        <div class="mb-12">
+                            <h3 class="text-2xl font-bold text-center mb-8">Struktur Organisasi</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+                                <div class="p-4">
+                                    <div class="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-3 overflow-hidden">
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Ketua" class="w-full h-full object-cover">
+                                    </div>
+                                    <h4 class="font-bold">Dimas Anggara</h4>
+                                    <span class="text-sm text-red-600">Ketua Umum</span>
+                                </div>
+                                <div class="p-4">
+                                    <div class="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-3 overflow-hidden">
+                                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sekretaris" class="w-full h-full object-cover">
+                                    </div>
+                                    <h4 class="font-bold">Ratna Dewi</h4>
+                                    <span class="text-sm text-red-600">Koordinator Program</span>
+                                </div>
+                                <div class="p-4">
+                                    <div class="w-24 h-24 bg-gray-300 rounded-full mx-auto mb-3 overflow-hidden">
+                                        <img src="https://randomuser.me/api/portraits/men/86.jpg" alt="Bendahara" class="w-full h-full object-cover">
+                                    </div>
+                                    <h4 class="font-bold">Rizky H.</h4>
+                                    <span class="text-sm text-red-600">Hubungan Masyarakat</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact -->
+                        <div class="bg-gray-900 text-white rounded-xl p-8 text-center">
+                            <h3 class="text-xl font-bold mb-4">Ingin Berkolaborasi?</h3>
+                            <p class="text-gray-400 mb-6">Kami terbuka untuk kerjasama dengan kampus, sekolah, dan perusahaan.</p>
+                            <button class="bg-red-600 hover:bg-red-700 px-6 py-3 rounded-full font-bold transition">Hubungi Kami via WhatsApp</button>
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        // Initialize First Page
+        renderHome();
+
+    </script>
+</body>
+</html>
